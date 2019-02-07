@@ -55,8 +55,10 @@ static void test_heightmap_from_disparity_affine()
     }
   }
 
-  vgl_box_3d<double> hmap_bounds(vgl_point_3d<double>(0,0,-2), vgl_point_3d<double>(1,1,6));
-  double GSD = 1.0;
+  // make heightmap bounds slightly inside test points to ensure their values are captured
+  double eps = 1e-6;
+  vgl_box_3d<double> hmap_bounds(vgl_point_3d<double>(eps, eps, -2), vgl_point_3d<double>(1, 1 ,6));
+  double GSD = 1.0-eps;
   vil_image_view<float> hmap_pred = bpgl_heightmap_from_disparity(cam1, cam2, disparity,
                                                                   hmap_bounds, GSD);
 
