@@ -82,17 +82,15 @@ public:
     int num_valid_neighbors = 0;
     for (unsigned i=0; i<num_neighbors; ++i) {
       vgl_point_2d<T> const& neighbor_loc(neighbor_locs[i]);
-      T dist = (neighbor_locs[i] - loc).length();
-      if (dist > max_dist_) {
-        dist = 0;
-      }
-      else {
+      T dist = (neighbor_loc - loc).length();
+      T weight = 0;
+      if (dist <= max_dist_) {
         ++num_valid_neighbors;
+        if (dist < eps) {
+          dist = eps;
+        }
+        weight = 1.0 / dist;
       }
-      if (dist < eps) {
-        dist = eps;
-      }
-      T weight = 1.0 / dist;
       A[i][0] = weight * neighbor_loc.x();
       A[i][1] = weight * neighbor_loc.y();
       A[i][2] = weight;
