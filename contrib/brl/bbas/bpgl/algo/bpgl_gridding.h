@@ -108,6 +108,76 @@ private:
   DATA_T invalid_val_;
 };
 
+template<class T, class DATA_T>
+class consensus_linear_interp
+{
+public:
+  consensus_linear_interp( T consensus_thresh,
+                    T max_dist=vnl_numeric_traits<T>::maxval,
+                    DATA_T invalid_val=DATA_T(NAN) )
+    : max_dist_(max_dist), invalid_val_(invalid_val), consensus_thresh_(consensus_thresh)
+  {}
+  DATA_T operator() ( vgl_point_2d<T> loc,
+                      std::vector<vgl_point_2d<T>> const& neighbor_locs,
+                      std::vector<DATA_T> const& neighbor_vals ) const
+  {
+    const unsigned num_pts = neighbor_locs.size();
+
+    std::vector<int> best_inliers;
+    T best_dist = 0; // used as a tie-breaker
+    for (int i=0; i<num_pts; ++i) {
+      const DATA_T val = neighbor_vals[i];
+      std::vector<int> inliers;
+      T dist = (neighbor_locs[i] - loc).length();
+      for (int j=0; j<num_pts; ++j) {
+        if ((neighbor_locs[j] - loc).length() > max_dist_) {
+          continue;
+        }
+        if (std::abs(neighbor_vals[j] - val) <= consensus_thresh_) {
+          inliers.push_back(j);
+        }
+      }
+      if ( (inliers.size() > best_inliers.size()) ||
+           ((inliers.size() == best_inliers.size()) && (dist < best_dist))
+         )
+      {
+        best_inliers = std::move(inliers);
+        best_dist = dist;
+      }
+    }
+    const int num_neighbors = best_inliers.size();
+    if (num_neighbors < 3) {
+      return invalid_val_;
+    }
+    // perform linear interpolation using inliers only
+    T weight_sum(0);
+    T val_sum(0);
+
+    const T eps(1e-6);
+    vnl_matrix<T> A(num_neighbors,3);
+    vnl_vector<T> b(num_neighbors);
+    for (unsigned i=0; i<num_neighbors; ++i) {
+      vgl_point_2d<T> const& neighbor_loc(neighbor_locs[best_inliers[i]]);
+      T dist = (neighbor_loc - loc).length();
+      if (dist < eps) {
+        dist = eps;
+      }
+      T weight = 1.0 / dist;
+      A[i][0] = weight * neighbor_loc.x();
+      A[i][1] = weight * neighbor_loc.y();
+      A[i][2] = weight;
+      b[i] = weight * neighbor_vals[i];
+    }
+    vnl_vector<T> f = vnl_matrix_inverse<T>(A) * b;
+    DATA_T value = f[0]*loc.x() + f[1]*loc.y() + f[2];
+    return value;
+  }
+private:
+  T max_dist_;
+  DATA_T invalid_val_;
+  T consensus_thresh_;
+};
+
 
 
 template<class T, class DATA_T, class INTERP_T>
