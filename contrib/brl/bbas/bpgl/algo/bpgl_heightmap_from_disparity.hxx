@@ -54,7 +54,7 @@ bpgl_heightmap_from_disparity(CAM_T const& cam1, CAM_T const& cam2,
   unsigned num_neighbors = 3;
 
   // grid the 3D points into a DSM
-  const double consensus_thresh = 4.0;
+  const double consensus_thresh = 10.0;
   bpgl_gridding::consensus_linear_interp<double, float> interp_fun(consensus_thresh, ground_sample_distance*3, NAN);
   vil_image_view<float> hmap = bpgl_gridding::grid_data_2d(triangulated_xy, height_vals,
                                                            upper_left, ni, nj, ground_sample_distance,
