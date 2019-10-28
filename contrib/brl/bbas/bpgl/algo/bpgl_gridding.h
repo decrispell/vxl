@@ -82,57 +82,52 @@ public:
                       std::vector<vgl_point_2d<T>> const& neighbor_locs,
                       std::vector<DATA_T> const& neighbor_vals ) const
   {
-    T weight_sum(0);
-    T val_sum(0);
     const unsigned num_neighbors = neighbor_locs.size();
-    vnl_matrix<T> A(num_neighbors,3);
+    vnl_matrix<T> A(num_neighbors,2);
     vnl_vector<T> b(num_neighbors);
     int num_valid_neighbors = 0;
     // compute mean neighbor location
-    T x_mean = 0, y_mean = 0, min_dist = max_dist_;
+    T x_mean = 0, y_mean = 0, weight_sum = 0;
     DATA_T val_mean(0);
-    std::vector<T> dists(num_neighbors);
+    std::vector<T> weights(num_neighbors, 0);
     for (unsigned i=0; i<num_neighbors; ++i) {
       vgl_point_2d<T> const& neighbor_loc(neighbor_locs[i]);
       const T dist = (neighbor_loc - loc).length();
-      dists[i] = dist;
       if (dist <= max_dist_) {
-        if (dist < min_dist) {
-          min_dist = dist;
-        }
+        const T weight = 1.0;// / (dist + dist_eps_);
+        weights[i] = weight;
         ++num_valid_neighbors;
         x_mean += neighbor_loc.x();
         y_mean += neighbor_loc.y();
-        val_mean += neighbor_vals[i];
+        val_mean += weight * neighbor_vals[i];
+        weight_sum += weight;
       }
     }
-    x_mean /= num_valid_neighbors;
-    y_mean /= num_valid_neighbors;
-    val_mean /= num_valid_neighbors;
-
     if (num_valid_neighbors < 1) {
       return invalid_val_;
     }
+    x_mean /= num_valid_neighbors;
+    y_mean /= num_valid_neighbors;
+    val_mean /= weight_sum;
+
     for (unsigned i=0; i<num_neighbors; ++i) {
-      const T weight = (min_dist + dist_eps_) / (dists[i] + dist_eps_);
       vgl_point_2d<T> const& neighbor_loc(neighbor_locs[i]);
+      const T weight = weights[i] / weight_sum;
       A[i][0] = weight * (neighbor_loc.x() - x_mean);
       A[i][1] = weight * (neighbor_loc.y() - y_mean);
-      A[i][2] = weight;
       b[i] = weight * (neighbor_vals[i] - val_mean);
     }
     // employ Tikhonov Regularization to cope with degenerate point configurations
-    vnl_matrix<T> R(3, 3, 0);
+    vnl_matrix<T> R(2, 2, 0);
     // A function of the form z = ax + by + c is fit to the neighbor data points.
-    // Apply regularization to the a and b parameters, but not c.  This way, the fitting
+    // The value of c is determined by the (weighted) mean of the neighbor values.
+    // Apply regularization to the a and b parameters. This way, the fitting
     // will approach a weighted average as the regularization constant is increased.
     R[0][0] = regularization_const_;
     R[1][1] = regularization_const_;
-    R[2][2] = regularization_const_;
     vnl_matrix<T> A_transpose = A.transpose();
     vnl_vector<T> f = vnl_matrix_inverse<T>(A_transpose*A + R.transpose()*R)*A_transpose * b;
-    std::cout << "f = " << f << std::endl;
-    DATA_T value = f[0]*(loc.x() - x_mean) + f[1]*(loc.y() - y_mean) + f[2] + val_mean;
+    DATA_T value = f[0]*(loc.x() - x_mean) + f[1]*(loc.y() - y_mean) + val_mean;
     return value;
   }
 private:

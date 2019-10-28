@@ -140,19 +140,42 @@ void test_interp_real()
 void test_interp_few_neighbors()
 {
   // Test that regularization allows for number of neighbors < 3
+  bpgl_gridding::linear_interp<double, double> interp;
+
+  // A single neighbor
   std::vector<vgl_point_2d<double>> ctrl_pts;
   ctrl_pts.emplace_back(0.0, 0.0);
-  ctrl_pts.emplace_back(1.0, 1.0);
-
-  std::vector<double> values = {10.0, 20.0};
-
- bpgl_gridding::linear_interp<double, double> interp;
+  std::vector<double> values = {10.0};
 
   vgl_point_2d<double> test_point(0.5, 0.5);
   double value = interp(test_point, ctrl_pts, values);
 
-  TEST_NEAR("interpolated value in correct range", value, 15.0, 1.0);
+  TEST_NEAR("Single-value interpolation returns neighbor value", value, 10.0, 1.0);
 
+  // Two neighbors
+  ctrl_pts.emplace_back(1.0, 1.0);
+  values.push_back(20.0);
+
+  value = interp(test_point, ctrl_pts, values);
+
+  TEST_NEAR("Two-value interpolation returns value between neighbor values", value, 15.0, 1.0);
+}
+
+void test_interp_far()
+{
+  // Test that interpolation fn returns close to weighted average of inputs far from ctrl pts
+  std::vector<vgl_point_2d<double>> ctrl_pts;
+  ctrl_pts.emplace_back(0.0, 0.0);
+  ctrl_pts.emplace_back(1.0, 0.0);
+  ctrl_pts.emplace_back(2.0, 0.0);
+  std::vector<double> values = {10.0, 20.0, 30.0};
+
+  bpgl_gridding::linear_interp<double, double> interp;
+
+  vgl_point_2d<double> test_pt(100,100);
+  double value = interp(test_pt, ctrl_pts, values);
+
+  TEST_NEAR("Behavior far from control points", value, 20.0, 5.0);
 }
 
 static void test_gridding()
@@ -161,6 +184,7 @@ static void test_gridding()
   test_degenerate();
   test_interp_real();
   test_interp_few_neighbors();
+  test_interp_far();
 }
 
 TESTMAIN(test_gridding);
