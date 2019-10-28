@@ -18,7 +18,7 @@ void test_simple()
   // sample a simple surface z=x
   std::vector<vgl_point_2d<T> > sample_locs;
   sample_locs.emplace_back(2.0f, 2.0f);
-  sample_locs.emplace_back(1.5f, -1.2f);
+  sample_locs.emplace_back(-1.5f, -1.2f);
   sample_locs.emplace_back(4.5f, 0.5f);
   sample_locs.emplace_back(4.5f, 2.5f);
   sample_locs.emplace_back(3.0f, 3.0f);
@@ -32,7 +32,7 @@ void test_simple()
   }
 
   vgl_point_2d<T> upper_left(0.0f, 0.0f);
-  size_t ni = 8, nj = 8;
+  size_t ni = 5, nj = 5;
   T step_size = 1.0;
   unsigned num_neighbors = 4;
   T maxdist = 15.0f;
@@ -44,7 +44,7 @@ void test_simple()
                                 upper_left, ni, nj, step_size,
                                 interp_fun,
                                 num_neighbors);
-  bool print_grid = false;
+  bool print_grid = true;
   if (print_grid) {
     for (int j=0; j<nj; ++j) {
       for (int i=0; i<ni; ++i) {
@@ -72,20 +72,21 @@ void test_degenerate()
 
   // sample a simple surface z=x
   std::vector<vgl_point_2d<T> > sample_locs;
-  sample_locs.emplace_back(0.0f, 0.0f);
-  sample_locs.emplace_back(1.0f, 0.0f);
-  sample_locs.emplace_back(2.0f, 0.0f);
+  T xoff = 1000.0;
+  sample_locs.emplace_back(0.0f + xoff, 0.0f);
+  sample_locs.emplace_back(1.0f + xoff, 0.0f);
+  sample_locs.emplace_back(2.0f + xoff, 0.0f);
 
   vnl_random randgen(1234);  // fixed seed for repeatability
   std::vector<float> sample_vals;
   for (auto loc : sample_locs) {
-    double noise = randgen.normal()*0.01;
+    double noise = randgen.normal()*0.000001;
     // f(x,y) = x
-    sample_vals.push_back(loc.x() + noise);
+    sample_vals.push_back(loc.x() - xoff + noise);
   }
 
-  vgl_point_2d<T> upper_left(0.0f, 0.0f);
-  size_t ni = 6, nj = 6;
+  vgl_point_2d<T> upper_left(0.0f + xoff, 0.0f);
+  size_t ni = 4, nj = 4;
   T step_size = 1.0;
   unsigned num_neighbors = 3;
   T maxdist = 15.0f;
@@ -97,7 +98,7 @@ void test_degenerate()
                                 upper_left, ni, nj, step_size,
                                 interp_fun,
                                 num_neighbors);
-  bool print_grid = false;
+  bool print_grid = true;
   if (print_grid) {
     for (int j=0; j<nj; ++j) {
       for (int i=0; i<ni; ++i) {
@@ -119,7 +120,7 @@ void test_degenerate()
 }
 
 void test_interp_real()
-{ 
+{
   // A test case derived from a real example giving unexpected results
   std::vector<vgl_point_2d<double>> ctrl_pts;
   ctrl_pts.emplace_back(9.35039, 151.517);
@@ -136,11 +137,30 @@ void test_interp_real()
   TEST_NEAR("interpolated value in correct range", value, 47.0, 1.0);
 }
 
+void test_interp_few_neighbors()
+{
+  // Test that regularization allows for number of neighbors < 3
+  std::vector<vgl_point_2d<double>> ctrl_pts;
+  ctrl_pts.emplace_back(0.0, 0.0);
+  ctrl_pts.emplace_back(1.0, 1.0);
+
+  std::vector<double> values = {10.0, 20.0};
+
+ bpgl_gridding::linear_interp<double, double> interp;
+
+  vgl_point_2d<double> test_point(0.5, 0.5);
+  double value = interp(test_point, ctrl_pts, values);
+
+  TEST_NEAR("interpolated value in correct range", value, 15.0, 1.0);
+
+}
+
 static void test_gridding()
 {
   test_simple();
   test_degenerate();
   test_interp_real();
+  test_interp_few_neighbors();
 }
 
 TESTMAIN(test_gridding);
