@@ -55,8 +55,6 @@ subdirs(view)
 #util
 subdirs(util)
 
-#processes
-subdirs(pro)
 else()
   message(STATUS "Skipping contrib/brl/bseg/bstm: requires geotiff")
 endif()

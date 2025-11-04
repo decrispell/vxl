@@ -57,7 +57,6 @@ endif()
 
 add_subdirectory(grid)
 add_subdirectory(io)
-add_subdirectory(pro)
 add_subdirectory(algo)
 add_subdirectory(breg3d)
 if( BUILD_TESTING )

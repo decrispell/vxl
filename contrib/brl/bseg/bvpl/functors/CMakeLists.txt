@@ -27,9 +27,6 @@ vxl_add_library(LIBRARY_NAME bvpl_functors LIBRARY_SOURCES ${bvpl_functors_sourc
 
 target_link_libraries(bvpl_functors bvpl_kernels)
 
-#Directory with python/c++ processes
-#add_subdirectory(pro)
-
 if( BUILD_TESTING )
   add_subdirectory(tests)
 endif()

@@ -25,6 +25,4 @@ if( BUILD_TESTING )
   add_subdirectory(tests)
 endif()
 
-#pro
-add_subdirectory(pro)
 endif()

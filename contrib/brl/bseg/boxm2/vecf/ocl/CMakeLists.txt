@@ -31,10 +31,6 @@ target_link_libraries(boxm2_vecf_ocl boxm2_vecf boxm2_io  boxm2_ocl boxm2_ocl_al
 
 #install the .h .hxx and libs
 
-#processes
-subdirs(pro)
-
-
 #tests
 if( BUILD_TESTING )
   add_subdirectory(tests)

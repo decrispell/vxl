@@ -86,8 +86,6 @@ if(EXPAT_FOUND)
     endif()
 
     add_subdirectory(exe)
-
-    add_subdirectory(pro)
   endif()
 endif()
 else()

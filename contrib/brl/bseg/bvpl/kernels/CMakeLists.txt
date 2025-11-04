@@ -31,7 +31,6 @@ target_link_libraries(bvpl_kernels bxml bsvg bsta ${VXL_LIB_PREFIX}vgl_algo ${VX
 
 #Directory with python/c++ processes
 add_subdirectory(io)
-add_subdirectory(pro)
 
 if( BUILD_TESTING )
   add_subdirectory(tests)

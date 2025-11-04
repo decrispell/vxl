@@ -19,7 +19,3 @@ add_subdirectory(expatpp)
 option( VXL_FORCE_B3P_SHAPELIB "Use B3P instead of any native SHAPELIB library?" YES)
 mark_as_advanced( VXL_FORCE_B3P_SHAPELIB )
 add_subdirectory(shapelib)
-
-add_subdirectory(minizip)
-
-

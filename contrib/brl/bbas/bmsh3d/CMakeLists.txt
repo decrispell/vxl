@@ -36,7 +36,6 @@ vxl_add_library(LIBRARY_NAME bmsh3d LIBRARY_SOURCES  ${bmsh3d_sources})
 target_link_libraries( bmsh3d ${VXL_LIB_PREFIX}vgl ${VXL_LIB_PREFIX}vgl_algo ${VXL_LIB_PREFIX}vnl ${VXL_LIB_PREFIX}vul)
 
 add_subdirectory(algo)
-add_subdirectory(pro)
 add_subdirectory(vis)
 if(BUILD_TESTING)
   add_subdirectory(tests)

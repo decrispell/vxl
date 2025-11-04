@@ -25,8 +25,6 @@ add_subdirectory(algo)
 #executables
 add_subdirectory(exe)
 
-##executables
-add_subdirectory(pro)
 #tests
 if( BUILD_TESTING )
   add_subdirectory(tests)

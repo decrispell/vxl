@@ -31,7 +31,6 @@ vxl_add_library(LIBRARY_NAME bvxm_grid LIBRARY_SOURCES ${bvxm_grid_sources})
 target_link_libraries( bvxm_grid ${VXL_LIB_PREFIX}vpgl ${VXL_LIB_PREFIX}vnl ${VXL_LIB_PREFIX}vil ${VXL_LIB_PREFIX}vil_algo ${VXL_LIB_PREFIX}vul ${VXL_LIB_PREFIX}vbl ${VXL_LIB_PREFIX}vsl ${VXL_LIB_PREFIX}vgl ${VXL_LIB_PREFIX}vgl_algo vil3d vil3d_algo ${VXL_LIB_PREFIX}vcl)
 
 add_subdirectory(io)
-add_subdirectory(pro)
 
 if( BUILD_TESTING )
   add_subdirectory(tests)

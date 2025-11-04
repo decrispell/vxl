@@ -124,7 +124,6 @@ if(EXPAT_FOUND)
 endif()
 
 add_subdirectory(algo)
-add_subdirectory(pro)
 add_subdirectory(io)
 add_subdirectory(reg)
 

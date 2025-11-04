@@ -19,8 +19,6 @@ if(VXL_BUILD_MUL)
 
   target_link_libraries(breg3d bvxm ${VXL_LIB_PREFIX}vpgl ${VXL_LIB_PREFIX}vpgl_algo ihog vsol brip brdb ${VXL_LIB_PREFIX}vil ${VXL_LIB_PREFIX}vnl ${VXL_LIB_PREFIX}vgl_algo ${VXL_LIB_PREFIX}vgl ${VXL_LIB_PREFIX}vnl_algo ${VXL_LIB_PREFIX}vnl_io ${VXL_LIB_PREFIX}vul)
 
-  add_subdirectory(pro)
-
   if( BUILD_TESTING )
     add_subdirectory(tests)
   endif()

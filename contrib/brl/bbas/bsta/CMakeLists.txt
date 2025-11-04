@@ -77,6 +77,3 @@ add_subdirectory(io)
 
 # Visualization Tools for various bsta constructs
 add_subdirectory(vis)
-
-# process library
-add_subdirectory(pro)

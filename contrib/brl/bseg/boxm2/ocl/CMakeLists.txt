@@ -30,9 +30,6 @@ if(OpenCL_FOUND)
 
   #install the .h .hxx and libs
 
-  #pro
-  add_subdirectory(pro)
-
   #exe
   add_subdirectory(exe)
 

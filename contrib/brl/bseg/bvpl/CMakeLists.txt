@@ -22,7 +22,6 @@ vxl_add_library(LIBRARY_NAME bvpl LIBRARY_SOURCES ${bvpl_sources})
 
 target_link_libraries(bvpl bvpl_kernels bvpl_functors bvxm_grid bdgl bsta ${VXL_LIB_PREFIX}vnl ${VXL_LIB_PREFIX}vnl_io ${VXL_LIB_PREFIX}vil_algo ${VXL_LIB_PREFIX}vgl ${VXL_LIB_PREFIX}vpl ${VXL_LIB_PREFIX}vul ${VXL_LIB_PREFIX}vbl_io ${VXL_LIB_PREFIX}vsl ${VXL_LIB_PREFIX}vbl)
 
-add_subdirectory(pro)
 add_subdirectory(util)
 add_subdirectory(kernels)
 add_subdirectory(functors)

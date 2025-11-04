@@ -26,9 +26,6 @@ if(VGUI_FOUND)
 
   target_link_libraries(boxm2_vecf_view bocl boxm2_pro boxm2_ocl_pro boxm2_cpp boxm2_cpp_pro ${VXL_LIB_PREFIX}vgui bprb ${VXL_LIB_PREFIX}vnl ${VXL_LIB_PREFIX}vnl_algo ${VXL_LIB_PREFIX}vbl_io ${VXL_LIB_PREFIX}vpgl vsph ${VXL_LIB_PREFIX}vgl ${VXL_LIB_PREFIX}vil ${VXL_LIB_PREFIX}vbl ${VXL_LIB_PREFIX}vul ${GLEW_LIBRARY} ${OpenCL_LIBRARIES} )
 
-  #pro
-#  add_subdirectory(pro)
-
   #tests
   if( BUILD_TESTING )
     add_subdirectory(tests)

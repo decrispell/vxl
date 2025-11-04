@@ -20,8 +20,6 @@ target_link_libraries( bsgm vidl_pro ${VXL_LIB_PREFIX}acal ${VXL_LIB_PREFIX}bpgl
 
 add_subdirectory( app )
 
-add_subdirectory( pro )
-
 if( BUILD_TESTING )
   add_subdirectory(tests)
 endif()

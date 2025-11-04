@@ -88,9 +88,6 @@ if( VXL_BUILD_GEL )
   add_subdirectory(bseg)
 endif()
 
-# process libraries
-add_subdirectory(bpro)
-
 # cvg library
 add_subdirectory(cvg)
 

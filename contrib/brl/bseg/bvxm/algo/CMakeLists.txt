@@ -14,10 +14,6 @@ vxl_add_library(LIBRARY_NAME bvxm_algo LIBRARY_SOURCES ${bvxm_algo_sources})
 
 target_link_libraries( bvxm_algo bvxm bkml bsta bvgl_algo ${VXL_LIB_PREFIX}vgl ${VXL_LIB_PREFIX}vil ${VXL_LIB_PREFIX}vnl volm ${VXL_LIB_PREFIX}vpgl ${VXL_LIB_PREFIX}vul)
 
-
-
-add_subdirectory(pro)
-
 if( BUILD_TESTING )
   add_subdirectory(tests)
 endif()

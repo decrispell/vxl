@@ -13,7 +13,6 @@ if(EXPAT_FOUND)
     include_directories(${EXPAT_INCLUDE_DIRS} )
     include_directories(${EXPATPP_INCLUDE_DIRS} )
 
-    add_subdirectory(pro)
   endif()
 endif()
 else()

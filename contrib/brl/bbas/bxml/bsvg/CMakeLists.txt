@@ -18,5 +18,3 @@ target_link_libraries( bsvg bxml )
 if( BUILD_TESTING )
   add_subdirectory(tests)
 endif()
-
-add_subdirectory(pro)

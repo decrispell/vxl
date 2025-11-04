@@ -80,10 +80,6 @@ endif()
 # OpenCL support code
 add_subdirectory(ocl)
 
-
-#processes
-#subdirs(pro)
-
 # viewing for articulated scenes
 subdirs(view)
 

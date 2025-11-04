@@ -61,9 +61,6 @@ subdirs(class)
 #registration Library
 subdirs(reg)
 
-#pro
-subdirs(pro)
-
 #tableaus
 subdirs(view)
 

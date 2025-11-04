@@ -42,6 +42,4 @@ if(HDFS_FOUND)
   #tests
   add_subdirectory(tests)
 
-  #pro
-  add_subdirectory(pro)
 endif()

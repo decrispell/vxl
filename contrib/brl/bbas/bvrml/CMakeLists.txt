@@ -12,5 +12,3 @@ target_link_libraries(bvrml ${VXL_LIB_PREFIX}vgl)
 if( BUILD_TESTING )
   add_subdirectory(tests)
 endif()
-
-add_subdirectory(pro)

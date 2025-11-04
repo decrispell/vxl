@@ -43,9 +43,6 @@ if(EXPAT_FOUND)
 
     add_subdirectory(exe)
 
-    #pro
-    add_subdirectory(pro)
-
     #desc matcher
     add_subdirectory(desc)
 
